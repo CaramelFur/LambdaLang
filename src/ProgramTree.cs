@@ -14,7 +14,7 @@ namespace LambdaLang
       this.operations = operations;
     }
 
-    public void Run()
+    public FunctionResult GetMainFunction()
     {
       var scope = new Scope();
 
@@ -23,17 +23,22 @@ namespace LambdaLang
         operations[i].Run(scope);
       }
 
-      dynamic main = scope.Retrieve("main").Get();
+      Result main = scope.Retrieve("main");
       //var solved = ((FunctionResult) main).Apply();
-      
-      if (main.GetType() != typeof(FunctionResult))
+
+      if (main.GetType() == typeof(FunctionResult))
       {
-        Console.WriteLine(main);
+        return (FunctionResult)main;
       }
       else
       {
-        throw new LambdaException("Main not a result");
+        throw new LambdaException("Main not is not a function");
       }
+    }
+
+    public Result RunMainWithArgs(dynamic argument){
+      FunctionResult main = GetMainFunction();
+      return main.Apply(new ConstantResult(argument));
     }
 
     public override string ToString()

@@ -6,8 +6,13 @@ namespace LambdaLang.Solvables
 {
   public class Abstraction : Solvable
   {
-    readonly string argumentName;
+    readonly string? argumentName;
     readonly Solvable expression;
+
+    public Abstraction(Solvable expression)
+    {
+      this.expression = expression;
+    }
 
     public Abstraction(string argument, Solvable expression)
     {
@@ -23,7 +28,17 @@ namespace LambdaLang.Solvables
     public Result Apply(Scope scope, Result argument)
     {
       var subScope = scope.GetChild();
-      subScope.Store(argumentName, argument);
+      if (argumentName is string)
+      {
+        subScope.Store(argumentName, argument);
+      }
+
+      return expression.Solve(subScope);
+    }
+
+    public Result Apply(Scope scope)
+    {
+      var subScope = scope.GetChild();
 
       return expression.Solve(subScope);
     }

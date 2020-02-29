@@ -5,7 +5,7 @@ namespace LambdaLang.Scopes
 {
   public class Scope
   {
-    readonly Scope parent;
+    readonly Scope? parent;
     readonly int depth;
 
     readonly Dictionary<string, Result> values = new Dictionary<string, Result>();
@@ -35,7 +35,7 @@ namespace LambdaLang.Scopes
     {
       if (!values.ContainsKey(name))
       {
-        if (depth == 0) throw new LambdaException("Variable " + name + " was never assigned");
+        if (depth == 0 || !(parent is Scope)) throw new LambdaException("Variable " + name + " was never assigned");
         return parent.Retrieve(name);
       }
 

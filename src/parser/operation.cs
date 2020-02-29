@@ -5,7 +5,7 @@ namespace LambdaLang.LambdaParser
 {
   public class OperationParser
   {
-    static readonly CommentParser Comment = new CommentParser("//", "/*", "*/", "\n");
+    static readonly CommentParser Comment = new CommentParser("#", "/#", "#/", "\n");
 
     static readonly Parser<char> Equuals = Generic.Operator('=');
     static readonly Parser<string> SemiColon = Generic.Operator(";");
@@ -18,9 +18,9 @@ namespace LambdaLang.LambdaParser
       select new AssignOp(variable, solvable);
 
     public static readonly Parser<Operation> operation =
-      //from before in Comment.AnyComment.Many().Optional()
+      from before in Comment.AnyComment.Many().Optional()
       from operation in assignOperation
-      //from after in Comment.AnyComment.Many().Optional()
+      from after in Comment.AnyComment.Many().Optional()
       select operation;
   }
 }

@@ -18,6 +18,11 @@ namespace LambdaLang.Solvables
       return result;
     }
 
+    public Result Apply()
+    {
+      return result.Apply(scope);
+    }
+
     public Result Apply(Result argument)
     {
       return result.Apply(scope, argument);

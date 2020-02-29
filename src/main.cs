@@ -9,16 +9,19 @@ namespace LambdaLang
   {
     static void Main(string[] args)
     {
-      if(args.Length == 0){
+      if (args.Length == 0)
+      {
         throw new LambdaException("Please pass a file");
       }
 
       var test = File.ReadAllText(args[0]);
       var output = ProgramTreeParser.program.Parse(test);
 
-      output.Run();
+      var result = output.RunMainWithArgs(decimal.Parse(args.Length > 1 ? args[1] : "0"));
 
-    
+      Console.WriteLine(result.Get());
+
+
     }
   }
 }

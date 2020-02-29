@@ -7,14 +7,9 @@ namespace LambdaLang.LambdaParser
 {
   public class ExpressionParser
   {
-    static readonly Parser<char> Add = Generic.Operator('+');
-    static readonly Parser<char> Subtract = Generic.Operator('-');
-    static readonly Parser<char> Multiply = Generic.Operator('*');
-    static readonly Parser<char> Divide = Generic.Operator('/');
-    static readonly Parser<char> Modulo = Generic.Operator('%');
-    static readonly Parser<char> Power = Generic.Operator('^');
-
     static readonly Parser<string> Arrow = Generic.Operator("->");
+    static readonly Parser<string> Triangle = Generic.Operator("|>");
+    static readonly Parser<string> Exlcamation = Generic.Operator("!");
 
     static readonly Parser<Solvable> Constant =
          Parse.Decimal
@@ -26,11 +21,19 @@ namespace LambdaLang.LambdaParser
       .Select(x => new Variable(x))
       .Named("Variable");
 
-    static readonly Parser<Solvable> Function =
+    static readonly Parser<Solvable> ArgFunction =
       from argument in Generic.Word
       from dot in Arrow
       from expr in Main
       select new Abstraction(argument, expr);
+
+    static readonly Parser<Solvable> EmptFunction =
+    from dot in Triangle
+    from expr in Main
+    select new Abstraction(expr);
+
+
+    static readonly Parser<Solvable> Function = EmptFunction.Or(ArgFunction);
 
     static readonly Parser<Solvable> Factor =
         (from lparen in Parse.Char('(')
@@ -40,24 +43,17 @@ namespace LambdaLang.LambdaParser
          .Or(Constant)
          .Or(Function)
          .Or(Variable);
-    //.Or(FCall);
 
+    static readonly Parser<Solvable> Exec =
+      (
+        from expr in Factor
+        from excl in Exlcamation
+        select new COperator(expr)
+      ).Or(
+        Factor
+      );
 
-    static readonly Parser<Solvable> Operand =
-        (from sign in Parse.Char('-')
-         from factor in Factor
-         select new UOperator('-', factor)
-         ).XOr(Factor).Token();
-
-
-
-    static readonly Parser<Solvable> InnerTerm = Parse.ChainOperator(Power, Operand, DOperator.create);
-
-    static readonly Parser<Solvable> Term = Parse.ChainOperator(Multiply.Or(Divide).Or(Modulo), InnerTerm, DOperator.create);
-
-    static readonly Parser<Solvable> Expr = Parse.ChainOperator(Add.Or(Subtract), Term, DOperator.create);
-
-    public static readonly Parser<Solvable> Main = Parse.ChainOperator(Parse.WhiteSpace.Optional(), Expr, COperator.create);
+    public static readonly Parser<Solvable> Main = Parse.ChainOperator(Parse.WhiteSpace.Optional(), Exec, COperator.create);
 
     public static void Test()
     {

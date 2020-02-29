@@ -6,8 +6,13 @@ namespace LambdaLang.Solvables
 {
   public class COperator : Solvable
   {
-    private Solvable func;
-    private Solvable A;
+    private readonly Solvable func;
+    private readonly Solvable? A;
+
+    public COperator(Solvable func)
+    {
+      this.func = func;
+    }
 
     public COperator(Solvable func, Solvable A)
     {
@@ -17,7 +22,6 @@ namespace LambdaLang.Solvables
 
     public override Result Solve(Scope scope)
     {
-      var ASolved = A.Solve(scope);
       var functionResult = func.Solve(scope);
 
       if (functionResult.GetType() != typeof(FunctionResult))
@@ -25,8 +29,19 @@ namespace LambdaLang.Solvables
         throw new LambdaException(func + " is not a function");
       }
 
-      var function = ((FunctionResult) functionResult).Apply(ASolved);
-      return function;
+      Result result;
+
+      if (A is Solvable)
+      {
+        var ASolved = A.Solve(scope);
+        result = ((FunctionResult)functionResult).Apply(ASolved);
+      }
+      else
+      {
+        result = ((FunctionResult)functionResult).Apply();
+      }
+
+      return result;
     }
 
     public override string ToString()

@@ -1,0 +1,10 @@
+true = t -> f -> t 0;
+false = t -> f -> f 0;
+cond = c -> x -> y -> (c x) y;
+
+zero = f -> x -> x;
+
+succ = n -> f -> x -> f ((n f) x);
+plus = n -> m -> (m succ) n;
+
+main = plus 1 zero;

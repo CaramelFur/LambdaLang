@@ -1,7 +1,13 @@
+succ = n -> f -> x -> (f)((n)f)x;
+pred = n -> f -> x -> n (g -> h -> h (g f)) (u -> x) (u -> u);
+plus = m -> n -> f -> x -> m f (n f x);
+minus = m -> n -> (n pred) m;
+mult = m -> n -> f -> x -> m (n f) x;
+exp = m -> n -> n m;
 
+churchA = church 2;
+churchB = church 22;
 
-churchZero = church 8;
+churchResult = exp churchA churchB;
 
-S = n -> f -> x -> (f)((n)f)x;
-
-main = |> unchurch (S churchZero);
+main = |> (unchurch churchResult);

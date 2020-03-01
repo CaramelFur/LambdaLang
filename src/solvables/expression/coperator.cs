@@ -46,7 +46,7 @@ namespace LambdaLang.Solvables
 
     public override string ToString()
     {
-      return func + " " + argument;
+      return "(" + func + " " + argument + ")";
     }
 
     public static COperator create(dynamic any, Solvable func, Solvable arg)

@@ -1,5 +1,0 @@
-six = 3 + 3;
-sixteen = 4 * 4;
-addition = b -> a -> a + a;
-
-main = addition six eight;

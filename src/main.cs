@@ -17,6 +17,8 @@ namespace LambdaLang
       var test = File.ReadAllText(args[0]);
       var output = ProgramTreeParser.program.Parse(test);
 
+      //Console.WriteLine(output);
+
       var result = output.RunMainWithArgs(decimal.Parse(args.Length > 1 ? args[1] : "0"));
 
       Console.WriteLine(result.Get());

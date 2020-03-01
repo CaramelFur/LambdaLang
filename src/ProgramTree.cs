@@ -1,6 +1,7 @@
 using LambdaLang.Operations;
 using LambdaLang.Scopes;
 using LambdaLang.Solvables;
+using LambdaLang.Libraries;
 using System;
 
 namespace LambdaLang
@@ -17,6 +18,7 @@ namespace LambdaLang
     public FunctionResult GetMainFunction()
     {
       var scope = new Scope();
+      Church.AddToScope(scope);
 
       for (var i = 0; i < operations.Length; i++)
       {

@@ -1,3 +1,7 @@
-three = |> 9;
 
-main = |> three!;
+
+churchZero = church 8;
+
+S = n -> f -> x -> (f)((n)f)x;
+
+main = |> unchurch (S churchZero);

@@ -5,7 +5,7 @@ namespace LambdaLang.Solvables
 {
   public class Number : Solvable
   {
-    private decimal value;
+    public decimal value;
 
     public Number(decimal value)
     {
@@ -19,7 +19,7 @@ namespace LambdaLang.Solvables
 
     public override string ToString()
     {
-      return "num(" + value + ")";
+      return value.ToString();
     }
   }
 }

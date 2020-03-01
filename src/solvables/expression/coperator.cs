@@ -6,8 +6,8 @@ namespace LambdaLang.Solvables
 {
   public class COperator : Solvable
   {
-    private readonly Solvable func;
-    private readonly Solvable? A;
+    public readonly Solvable func;
+    public readonly Solvable? argument;
 
     public COperator(Solvable func)
     {
@@ -17,7 +17,7 @@ namespace LambdaLang.Solvables
     public COperator(Solvable func, Solvable A)
     {
       this.func = func;
-      this.A = A;
+      this.argument = A;
     }
 
     public override Result Solve(Scope scope)
@@ -31,9 +31,9 @@ namespace LambdaLang.Solvables
 
       Result result;
 
-      if (A is Solvable)
+      if (argument is Solvable)
       {
-        var ASolved = A.Solve(scope);
+        var ASolved = argument.Solve(scope);
         result = ((FunctionResult)functionResult).Apply(ASolved);
       }
       else
@@ -46,7 +46,7 @@ namespace LambdaLang.Solvables
 
     public override string ToString()
     {
-      return "call(" + func + " <- " + A + ")";
+      return func + " " + argument;
     }
 
     public static COperator create(dynamic any, Solvable func, Solvable arg)

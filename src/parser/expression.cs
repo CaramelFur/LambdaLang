@@ -53,7 +53,7 @@ namespace LambdaLang.LambdaParser
         Factor
       );
 
-    public static readonly Parser<Solvable> Main = Parse.ChainOperator(Parse.WhiteSpace.Optional(), Exec, COperator.create);
+    public static readonly Parser<Solvable> Main = Parse.ChainRightOperator(Parse.WhiteSpace.Optional(), Exec, COperator.create);
 
     public static void Test()
     {

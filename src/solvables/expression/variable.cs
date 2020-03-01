@@ -5,7 +5,7 @@ namespace LambdaLang.Solvables
 {
   public class Variable : Solvable
   {
-    private string value;
+    public string value;
 
     public Variable(string value)
     {
@@ -19,7 +19,7 @@ namespace LambdaLang.Solvables
 
     public override string ToString()
     {
-      return "var(" + value + ")";
+      return value;
     }
   }
 }
